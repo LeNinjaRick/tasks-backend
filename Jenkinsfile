@@ -17,7 +17,7 @@ pipeline {
 
                 }
             }
-                 stage('API Test') {
+            stage('API Test') {
                 steps {
                     dir('api-test') {
 
@@ -26,7 +26,7 @@ pipeline {
                     }
                 }
             }
-             stage('Deploy Frontend') {
+            stage('Deploy Frontend') {
                 steps {
                     dir('frontend') {
                     git 'https://github.com/LeNinjaRick/tasks-frontend.git'
@@ -34,6 +34,14 @@ pipeline {
                     deploy adapters: [tomcat8(credentialsId: 'TomcatLogin', path: '', url: 'http://localhost:8001/')], contextPath: 'tasks', war: 'target/tasks.war'
                     
                     
+                    }
+                }
+            }
+            stage('Functional Test') {
+                steps {
+                    dir('functional-test') {
+                    git 'https://github.com/LeNinjaRick/tasks-functional-tests.git'
+                    bat 'mvn test'
                     }
                 }
             }   
